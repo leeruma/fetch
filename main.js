@@ -8,18 +8,29 @@
   작업시간이 오래걸리는 업무를 수행할 때 promise로 반환하면
   해당 작업 완료 이후 동기적으로 다음 작업을 선형화해서 수행 (es6)
 */
+const section = document.querySelector('section');
+
 fetch('DB/department.json')
-	// fetch가 반환한 promise를 동기적으로 호출
 	.then((data) => {
-		// 이전 메서드에서 반환된 promise가 fullfiled상태일때 실행
-		console.log(data); // json형태로 pasrsing되지 않은 raw data
-		const result = console.log(data); // json형태로 변환시 promise로 반환
-		result.then((json) => {
-			console.log(json); // json로 반환된 데이터를 then으로 확인
+		// 첫번째 then 구문에 받아진 promise를 다시 바로 리턴하면
+		// 두번째 then 구문에서 해당 데이터를 동기적으로 활용가능
+		return data.json();
+	})
+	.then((json) => {
+		console.log(json.members);
+		let tags = '';
+		json.members.map((data) => {
+			tags += `
+        <article>
+          <div class='pic'>
+            <img src='img/${data.pic}'>
+          </div>
+        </article>
+      `;
 		});
+
+		section.innerHTML = tags;
 	})
 	.catch((err) => {
-		// 이전 메서드에서 반환된 promise가 rejected 상태일때 실행
-		// 오류가 발생했을 때 runtime에러가 발생하지 않도록 예외사항을 준비
 		console.log(err);
 	});
