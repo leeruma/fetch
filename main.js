@@ -25,6 +25,8 @@ fetch('DB/department.json')
           <div class='pic'>
             <img src='img/${data.pic}'>
           </div>
+          <h2>${data.name}</h2>
+          <p>${data.position}</p>
         </article>
       `;
 		});
